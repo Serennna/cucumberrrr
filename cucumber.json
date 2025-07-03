@@ -1,7 +1,12 @@
 {
-	"default":{
-		"formatOptions":{
-			"snippetInterface":"synchronous"
-		}
+	"default": {
+		"formatOptions": {
+			"snippetInterface": "synchronous"
+		},
+		"require": [
+			"features/step_definitions/**/*.js",
+			"support/**/*.js"
+		],
+		"timeout": 60000
 	}
 }
