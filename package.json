@@ -2,6 +2,8 @@
   "devDependencies": {
     "@cucumber/cucumber": "^11.3.0",
     "@playwright/test": "^1.53.2",
+    "cucumber-html-reporter": "^6.0.0",
+    "multiple-cucumber-html-reporter": "^3.9.3",
     "playwright": "^1.53.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
@@ -117,7 +119,14 @@
     "yup": "^1.6.1"
   },
   "scripts": {
-    "test": "cucumber-js"
+    "test": "cucumber-js",
+    "test:auto": "node run-tests.js",
+    "test:report": "cucumber-js && npm run generate-report",
+    "generate-report": "node report.js",
+    "test:clean": "rm -rf reports && npm run test:auto",
+    "test:headless": "TEST_HEADLESS=true node run-tests.js",
+    "kill-browsers": "pkill -f chromium || pkill -f chrome || true",
+    "open-report": "open reports/html/index.html"
   },
   "keywords": [],
   "author": "",

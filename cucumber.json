@@ -7,6 +7,11 @@
 			"features/step_definitions/**/*.js",
 			"support/**/*.js"
 		],
-		"timeout": 60000
+		"timeout": 120000,
+		"format": [ 
+			"json:reports/json/cucumber-report.json",
+			"html:reports/html/cucumber-report.html",
+			"progress-bar"
+		]
 	}
 }

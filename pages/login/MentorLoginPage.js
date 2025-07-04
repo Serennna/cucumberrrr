@@ -24,6 +24,8 @@ class MentorLoginPage {
 
     async clickSignInButton() {
         await this.page.click(this.signInButton);
+        // 等待按钮点击后的响应或页面开始导航
+        await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
     }
 
     async clickForgotPassword() {

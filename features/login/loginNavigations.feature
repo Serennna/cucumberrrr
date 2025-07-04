@@ -1,4 +1,4 @@
-Feature: User Login
+Feature: Login Navigations
     Background:
         Given the user is on the Sign In page
 

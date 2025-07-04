@@ -5,7 +5,7 @@ const { capitalize } = require('../../support/helper');
 
 // Login Navigations functions
 Given('the user is on the Sign In page', async function() {
-    await this.page.goto('https://ohhello-qa.web.app/sign_in');
+    await this.page.goto(`${config.baseURL}/sign_in`);
 });
 
 When('the user clicks login as {string}', async function(role) {
@@ -20,7 +20,7 @@ When('the user clicks the Get Started button', async function(){
 
 Then('the user should be redirected to the {string} login page', async function(role) {
     const formattedRole = role.toLowerCase();
-    const expectedUrl = `https://ohhello-qa.web.app/${formattedRole}/sign_in`;
+    const expectedUrl = `${config.baseURL}/${formattedRole}/sign_in`;
     
     // wait for the url to be the expected url
     await this.page.waitForURL(expectedUrl, { timeout: 10000 });
@@ -42,13 +42,8 @@ When('the mentee clicks the Sign In button', async function() {
     await this.menteeLoginPage.clickSignInButton();
 });
 
-When('the mentor clicks the Sign In button', async function() {
-    await this.mentorLoginPage.clickSignInButton();
-});
-
-
 Then('the mentee should be redirected to the mentee dashboard', async function() {
-    const expectedUrl = 'https://ohhello-qa.web.app/mentee/dashboard';
+    const expectedUrl = `${config.baseURL}/mentee/dashboard`;
     await this.page.waitForURL(expectedUrl, { timeout: 10000 });
     const url = await this.page.url();
     assert.strictEqual(url, expectedUrl);
@@ -67,7 +62,7 @@ When('the mentor clicks the login button', async function() {
 });
 
 Then('the mentor should be redirected to the mentor dashboard', async function() {
-    const expectedUrl = 'https://ohhello-qa.web.app/mentor/dashboard';
+    const expectedUrl = `${config.baseURL}/mentor/dashboard`;
     await this.page.waitForURL(expectedUrl, { timeout: 10000 });
     const url = await this.page.url();
     assert.strictEqual(url, expectedUrl);
