@@ -4,6 +4,9 @@ node_modules/
 # Test reports
 reports/
 
+# Documentation (temporary)
+waiting-strategies.md
+
 # OS generated files
 .DS_Store
 .DS_Store?

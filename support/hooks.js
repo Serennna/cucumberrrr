@@ -40,8 +40,8 @@ class CustomWorld {
                 await this.context.close();
                 this.context = null;
             }
-            if (this.browser) {
-                await this.browser.close();
+        if (this.browser) {
+            await this.browser.close();
                 // 从全局数组中移除
                 globalBrowsers = globalBrowsers.filter(b => b !== this.browser);
                 this.browser = null;
@@ -125,6 +125,6 @@ After(async function(scenario) {
         console.log('Error in After hook:', error.message);
     } finally {
         // 无论成功还是失败都要关闭浏览器
-        await this.closeBrowser();
+    await this.closeBrowser();
     }
 });

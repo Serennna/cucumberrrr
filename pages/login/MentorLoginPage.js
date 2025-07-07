@@ -24,8 +24,40 @@ class MentorLoginPage {
 
     async clickSignInButton() {
         await this.page.click(this.signInButton);
-        // 等待按钮点击后的响应或页面开始导航
-        await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+    }
+
+    async clickSignInButtonAndWaitForResponse() {
+        // 等待按钮可点击
+        await this.page.waitForSelector(this.signInButton, { 
+            state: 'visible', 
+            timeout: 10000 
+        });
+        
+        // 同时等待网络请求和点击
+        const [response] = await Promise.all([
+            this.page.waitForResponse(response => 
+                response.url().includes('/sign_in') || 
+                response.url().includes('/login') ||
+                response.url().includes('/auth')
+            ),
+            this.page.click(this.signInButton)
+        ]);
+        
+        return response;
+    }
+
+    async clickSignInButtonAndWaitForNavigation() {
+        // 等待按钮可点击
+        await this.page.waitForSelector(this.signInButton, { 
+            state: 'visible', 
+            timeout: 10000 
+        });
+        
+        // 点击按钮并等待URL变化
+        await this.page.click(this.signInButton);
+        
+        // 等待URL变化（页面跳转）
+        await this.page.waitForURL('**/mentor/dashboard', { timeout: 10000 });
     }
 
     async clickForgotPassword() {

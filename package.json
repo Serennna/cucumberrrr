@@ -125,6 +125,10 @@
     "generate-report": "node report.js",
     "test:clean": "rm -rf reports && npm run test:auto",
     "test:headless": "TEST_HEADLESS=true node run-tests.js",
+    "test:mentee": "cucumber-js features/login/menteeLogin.feature",
+    "test:mentor": "cucumber-js features/login/mentorLogin.feature",
+    "test:navigation": "cucumber-js features/login/loginNavigations.feature",
+    "test:single": "node run-single-test.js",
     "kill-browsers": "pkill -f chromium || pkill -f chrome || true",
     "open-report": "open reports/html/index.html"
   },
