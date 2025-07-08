@@ -2,6 +2,9 @@ const report = require('multiple-cucumber-html-reporter');
 const fs = require('fs');
 const path = require('path');
 
+// 读取package.json信息
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+
 // 确保报告目录存在
 const reportsDir = path.join(__dirname, 'reports');
 const jsonDir = path.join(reportsDir, 'json');
@@ -14,6 +17,10 @@ const screenshotDir = path.join(reportsDir, 'screenshots');
     }
 });
 
+// 获取当前时间
+const now = new Date();
+const executionTime = now.toISOString();
+
 // 生成报告
 report.generate({
     jsonDir: jsonDir,
@@ -23,14 +30,21 @@ report.generate({
     pageTitle: 'Cucumber Test Results',
     displayDuration: true,
     displayReportTime: true,
+    
+    // 使用customData代替metadata，避免结构问题
     customData: {
-        title: 'Test Info',
+        title: 'Test Information',
         data: [
-            { label: 'Project', value: 'Cucumber Test Suite' },
+            { label: 'Project', value: packageJson.name || 'Cucumber Test Suite' },
+            { label: 'Version', value: packageJson.version || '1.0.0' },
             { label: 'Environment', value: process.env.TEST_ENV || 'QA' },
             { label: 'Platform', value: process.platform },
             { label: 'Browser', value: 'Chromium' },
-            { label: 'Execution Start Time', value: new Date().toISOString() }
+            { label: 'Execution Time', value: executionTime },
+            { label: 'Node Version', value: process.version },
+            { label: 'Test Type', value: 'E2E Tests' },
+            { label: 'Cucumber Version', value: packageJson.devDependencies['@cucumber/cucumber'] || 'N/A' },
+            { label: 'Playwright Version', value: packageJson.devDependencies['@playwright/test'] || 'N/A' }
         ]
     }
 });

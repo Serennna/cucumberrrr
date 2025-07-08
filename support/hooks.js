@@ -40,8 +40,8 @@ class CustomWorld {
                 await this.context.close();
                 this.context = null;
             }
-        if (this.browser) {
-            await this.browser.close();
+            if (this.browser) {
+                await this.browser.close();
                 // 从全局数组中移除
                 globalBrowsers = globalBrowsers.filter(b => b !== this.browser);
                 this.browser = null;
@@ -74,13 +74,13 @@ BeforeAll(async function() {
 
 // 测试套件结束后的钩子
 AfterAll(async function() {
-    console.log('🏁 Test suite completed, cleaning up...');
+    console.log('Test suite completed, cleaning up...');
     await cleanupAllBrowsers();
 });
 
 // 清理所有浏览器实例的函数
 async function cleanupAllBrowsers() {
-    console.log('🧹 Cleaning up all browser instances...');
+    console.log('Cleaning up all browser instances...');
     for (const browser of globalBrowsers) {
         try {
             await browser.close();
@@ -92,7 +92,8 @@ async function cleanupAllBrowsers() {
     console.log('✅ All browser instances cleaned up');
 }
 
-Before(async function() {
+// 增加超时时间到15秒
+Before({ timeout: 15000 }, async function() {
     await this.launchBrowser();
 });
 
@@ -113,11 +114,17 @@ After(async function(scenario) {
             // 截图
             if (this.page) {
                 await this.page.screenshot({ path: screenshotPath, fullPage: true });
+                console.log('Screenshot saved:', screenshotPath);
                 
-                // 附加截图到报告 - 使用正确的方法
+                // 尝试附加截图到报告
                 if (this.attach) {
-                    const screenshot = fs.readFileSync(screenshotPath);
-                    this.attach(screenshot, 'image/png');
+                    try {
+                        const screenshot = fs.readFileSync(screenshotPath);
+                        this.attach(screenshot, 'image/png');
+                        console.log('Screenshot attached to report');
+                    } catch (attachError) {
+                        console.log('Error attaching screenshot:', attachError.message);
+                    }
                 }
             }
         }
@@ -125,6 +132,6 @@ After(async function(scenario) {
         console.log('Error in After hook:', error.message);
     } finally {
         // 无论成功还是失败都要关闭浏览器
-    await this.closeBrowser();
+        await this.closeBrowser();
     }
 });
